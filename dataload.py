@@ -53,5 +53,6 @@ def api_naver_TL(location):
     # 지정한 파일병으로 데이터 저장
     name=keyword+'('+location+')'
     data.to_csv(name+'.csv', encoding='utf-8-sig', index=False)
+    return data
       
       
