@@ -9,7 +9,7 @@ api를 이용하여 데이터 수집
 dataload.My_naver_api_ID = 'API_key_ID 값 입력(str)'
 dataload.My_naver_api_Secret = 'API_key_secret 값 입력(str)'
 dataload.keyword = '검색 키워드 문자열 입력(str)'
-api_naver_TL(location)   # naver api key를 이용해서 검색 위치에 따른 키워드 추출
+api_naver_TL(location)   # naver api key를 이용해서 검색 위치에 따른 키워드 값을 타이틀과 링크로 csv 파일로 저장
 '''
 
 # 입력값
