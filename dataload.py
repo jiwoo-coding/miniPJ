@@ -1,4 +1,15 @@
-# api를 이용하여 데이터 수집
+'''
+api를 이용하여 데이터 수집
+필수 import 설치 값
+    from bs4 import BeautifulSoup
+    import urllib.request
+    import pandas as pd
+    import requests
+
+dataload.My_naver_api_ID = 'API_key_ID 값 입력(str)'
+dataload.My_naver_api_Secret = 'API_key_secret 값 입력(str)'
+dataload.keyword = '검색 키워드 문자열 입력(str)'
+'''
 
 # 입력값
 My_naver_api_ID='NtViEQEhhin_KXWOLExO'
@@ -11,7 +22,11 @@ import pandas as pd
 import requests
 
 # naver api key를 이용해서 검색을 통한 키워드 추출
-def api_naver_TL(keyword, location):
+def api_naver_TL(location):
+    '''
+    parameter(1) : 'blog', 'cafe' 등 검색 위치 값(str)
+    
+    '''
     headers =  {   # Api key 입력
       'X-Naver-Client-Id': My_naver_api_ID,
       'X-Naver-Client-Secret': My_naver_api_Secret
