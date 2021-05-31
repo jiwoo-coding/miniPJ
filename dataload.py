@@ -24,7 +24,7 @@ def api_naver_TL(keyword, location):
         res = requests.get(url, headers=headers, params=dic_payload)
         dic={}
         for i in range(100):
-          try:
+            try:
                 temp=BeautifulSoup(res.json()['items'][i]['title'], 'html.parser')
                 temp=temp.get_text()  # HTML 파싱 한것 중 text만 가져옴
                 dic[temp]=res.json()['items'][i]['link']
