@@ -1,10 +1,10 @@
 '''
 api를 이용하여 데이터 수집
 필수 import 설치 값
-    from bs4 import BeautifulSoup
-    import urllib.request
-    import pandas as pd
-    import requests
+    from bs4 import BeautifulSoup   # pip install bs4
+    import urllib.request           # pip install urllib.request
+    import pandas as pd             # pip install pandas
+    import requests                 # pip install requests
 
 dataload.My_naver_api_ID = 'API_key_ID 값 입력(str)'
 dataload.My_naver_api_Secret = 'API_key_secret 값 입력(str)'
