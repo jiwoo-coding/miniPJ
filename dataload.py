@@ -13,7 +13,7 @@ Naver를 이용한 데이터 크롤링(API KEY 필요)
 
 # function
     dataload.api_naver_TL(*location)    >> 검색 위치와 검색 키워드로 타이틀과 링크를 csv 파일로 저장 및 data 호출
-    make_bodytext(*try_url, **location)  >> URL과 검색 위치에 따라서 TEXT(string) data로 반환
+    dataload.make_bodytext(*try_url, **location)  >> URL과 검색 위치에 따라서 TEXT(string) data로 반환
 '''
 try:
     from bs4 import BeautifulSoup
