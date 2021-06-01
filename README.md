@@ -1,6 +1,6 @@
 # 반려견 행동특성 챗봇 미니프로젝트
 
-### Data Collection
+### 1. Data Collection
 1. Web crawling
 <br> 웹크롤링을 위한 HTML element 크롬 단축키: Ctrl + shift + c
 
