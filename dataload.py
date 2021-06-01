@@ -109,7 +109,7 @@ def make_bodytext(try_url, location):
         **location='blog', 'cafe' 등 검색 위치 입력(string)
         
     return:
-        text data(string)       >> 문자열 형태로 본문 text data 추출 
+        text data(string)       >> 문자열 형태로 본문 text 추출 
     '''
     if location=='blog':  #'blog' 에서만 적용
         try:
