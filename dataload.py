@@ -12,7 +12,7 @@ Naver를 이용한 데이터 크롤링(API KEY 필요)
     dataload.My_naver_api_Secret = 'API_key_secret 값 입력(string)'   >> default="희주 API Secret Key"
 
 # function
-    dataload.api_naver_TL(*location)    >> 검색 위치와 검색 키워드로 타이틀과 링크를 csv 파일로 저장 및 data 호출
+    dataload.api_naver_TL(*keyword,**location)    >> 검색 위치와 검색 키워드로 타이틀과 링크를 dataframe 호출
     dataload.make_bodytext(*try_url, **location)  >> URL과 검색 위치에 따라서 TEXT(string) data로 반환
 '''
 try:
@@ -30,21 +30,21 @@ except:
     key='error'
         
 # naver api key를 이용해서 검색을 통한 키워드 추출
-def api_naver_TL(location):
+def api_naver_TL(keyword,location):
     '''
     api_naver_TL(*location)
     > naver api key를 이용한 후 검색사이트 지정 및 검색키워드에 따른 Title과 Link data 수집 및 저장
     > 1000 data searching
     
     argument:
-        *location='blog', 'cafe' 등 검색 위치 입력(string)
+        *keyword=검색어(string)
+        **location='blog', 'cafe' 등 검색 위치 입력(string)
         
     return:
     (총 2개)
         Dataframe       >> dataframe 형태로 data 추출 
         검색키워드(검색위치).csv 파일로 directory 자동 저장
     '''
-    keyword=input("검색어를 입력해 주세요: ")
     
     headers =  {   # Api key 입력
       'X-Naver-Client-Id': My_naver_api_ID,
@@ -67,10 +67,7 @@ def api_naver_TL(location):
         temp_df=pd.DataFrame(dic.items(), columns=['Title','Link'])
         data=pd.concat([data,temp_df], axis=0)  # dataframe 복사
     data.reset_index(drop=True, inplace=True) # 인덱스 정렬
-
-    # 지정한 파일병으로 데이터 저장
-    name=keyword+'('+location+')'
-    data.to_csv(name+'.csv', encoding='utf-8-sig', index=False)
+    
     return data
 
 # 동적 elements의 HTML을 가져오기 위해 blog URL 재설정
