@@ -7,12 +7,13 @@ Naver를 이용한 데이터 크롤링(API KEY 필요)
     import pandas as pd             # pip install pandas
     import requests                 # pip install requests
 
-*api_key setting
-    dataload.My_naver_api_ID = 'API_key_ID 값 입력(str)'           >> default="희주 API ID Key"
-    dataload.My_naver_api_Secret = 'API_key_secret 값 입력(str)'   >> default="희주 API Secret Key"
+# api_key setting
+    dataload.My_naver_api_ID = 'API_key_ID 값 입력(string)'           >> default="희주 API ID Key"
+    dataload.My_naver_api_Secret = 'API_key_secret 값 입력(string)'   >> default="희주 API Secret Key"
 
-*function
-    dataload.api_naver_TL(*location)  >> 검색 위치와 검색 키워드로 타이틀과 링크를 csv 파일로 저장 및 data 호출
+# function
+    dataload.api_naver_TL(*location)    >> 검색 위치와 검색 키워드로 타이틀과 링크를 csv 파일로 저장 및 data 호출
+    make_bodytext(*try_url, **location)  >> URL과 검색 위치에 따라서 TEXT(string) data로 반환
 '''
 try:
     from bs4 import BeautifulSoup
@@ -35,7 +36,7 @@ def api_naver_TL(location):
     > 1000 data searching
     
     argument:
-        *location='blog', 'cafe' 등 검색 위치 입력(str)
+        *location='blog', 'cafe' 등 검색 위치 입력(string)
         
     return:
     (총 2개)
@@ -71,8 +72,8 @@ def api_naver_TL(location):
     data.to_csv(name+'.csv', encoding='utf-8-sig', index=False)
     return data
 
-# 동적 elements의 HTML을 가져오기 위해 URL 재설정
-def final_url(try_url):
+# 동적 elements의 HTML을 가져오기 위해 blog URL 재설정
+def final_url_blog(try_url):
     try:
         url=try_url
         html_result=requests.get(url)
@@ -95,4 +96,32 @@ def final_url(try_url):
         except:
             print(f'{try_url} renew error')
             return None
+
+# 새롭게 만든 URL을 이용해서 TEXT data 추출
+def make_bodytext(try_url, location):
+    '''
+    make_bodytext(*try_url, **location)
+    > url을 가져와서 검색위치에 따라 본문의 TEXT data 반환 
+    > 검색위치에 따라서 동적, 정적 elements가 나뉨
     
+    argument:
+        *try_url= Link값 (string)
+        **location='blog', 'cafe' 등 검색 위치 입력(string)
+        
+    return:
+        text data(string)       >> 문자열 형태로 본문 text data 추출 
+    '''
+    if location=='blog':  #'blog' 에서만 적용
+        try:
+            url=final_url_blog(try_url)   # URL 재생성
+            res=urllib.request.urlopen(url)
+            soup=BeautifulSoup(res, 'html.parser')
+            title = soup.findAll("div",{"class":'se-main-container'})     #블로그마다 동일하게 HTML 중 div에서 se-main-container의 본문을 가져옴
+            for a in title:
+                text=a.get_text()    # 가져온 본문 중 text만 가져옴
+            return text
+        except:
+            print(f"{try_url}({location}) error")
+    else:
+        print("location is not allowed")
+        return 0
