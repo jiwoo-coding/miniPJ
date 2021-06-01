@@ -6,11 +6,26 @@ api를 이용하여 데이터 수집
     import pandas as pd             # pip install pandas
     import requests                 # pip install requests
 
-dataload.My_naver_api_ID = 'API_key_ID 값 입력(str)'           >> default="희주 API ID Key"
-dataload.My_naver_api_Secret = 'API_key_secret 값 입력(str)'   >> default="희주 API Secret Key"
-dataload.api_naver_TL(*location)        >> 검색 위치와 검색 키워드로 타이틀과 링크를 csv 파일로 저장 및 data 호출
-'''
+*api_key setting
+    dataload.My_naver_api_ID = 'API_key_ID 값 입력(str)'           >> default="희주 API ID Key"
+    dataload.My_naver_api_Secret = 'API_key_secret 값 입력(str)'   >> default="희주 API Secret Key"
 
+*function
+    dataload.api_naver_TL(*location)  >> 검색 위치와 검색 키워드로 타이틀과 링크를 csv 파일로 저장 및 data 호출
+'''
+try:
+    from bs4 import BeautifulSoup
+    import urllib.request
+    import pandas as pd
+    import requests
+
+    # 입력값
+    My_naver_api_ID='NtViEQEhhin_KXWOLExO'
+    My_naver_api_Secret='bNHhcXBeWr'
+except:
+    print("필수 import 설치 요구 (dataload? 참고)")
+    key='error'
+        
 # naver api key를 이용해서 검색을 통한 키워드 추출
 def api_naver_TL(location):
     '''
@@ -55,18 +70,5 @@ def api_naver_TL(location):
     data.to_csv(name+'.csv', encoding='utf-8-sig', index=False)
     return data
       
-if __name__ == '__main__':
-    try:
-        from bs4 import BeautifulSoup
-        import urllib.request
-        import pandas as pd
-        import requests
-        
-        # 입력값
-        My_naver_api_ID='NtViEQEhhin_KXWOLExO'
-        My_naver_api_Secret='bNHhcXBeWr'
-        print("dataload? 참고 후 module 실행 요구")
-    except:
-        print("필수 import 설치 요구 (dataload? 참고)")
-        key='error'
+
     
