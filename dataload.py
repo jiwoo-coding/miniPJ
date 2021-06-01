@@ -1,5 +1,6 @@
 '''
-api를 이용하여 데이터 수집
+Naver를 이용한 데이터 크롤링(API KEY 필요)
+
 필수 import 설치 요구
     from bs4 import BeautifulSoup   # pip install bs4
     import urllib.request           # pip install urllib.request
@@ -69,6 +70,29 @@ def api_naver_TL(location):
     name=keyword+'('+location+')'
     data.to_csv(name+'.csv', encoding='utf-8-sig', index=False)
     return data
-      
 
+# 동적 elements의 HTML을 가져오기 위해 URL 재설정
+def final_url(try_url):
+    try:
+        url=try_url
+        html_result=requests.get(url)
+        soup_temp=BeautifulSoup(html_result.text, 'html.parser')
+        area_temp=soup_temp.find(id='screenFrame')   # id가 screenFrame을 찾는다.
+        url_2=area_temp.get('src')                   # 이에 따른 소스를 집어 넣음
+        html_result=requests.get(url_2)               
+        soup_temp=BeautifulSoup(html_result.text, 'html.parser')
+        area_temp=soup_temp.find(id='mainFrame')     # id가 mainFrame을 찾는다.
+        url_3=area_temp.get('src')
+        print(url_3)
+        url_4='https://blog.naver.com'+url_3         # 
+        return url_4
+    except:
+        try:
+            area_temp = soup_temp.find(id='mainFrame')
+            url_3=area_temp.get('src')
+            url_4='https://blog.naver.com'+url_3
+            return url_4
+        except:
+            print(f'{try_url} renew error')
+            return None
     
