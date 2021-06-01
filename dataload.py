@@ -119,8 +119,8 @@ def make_bodytext(try_url, location):
             title = soup.findAll("div",{"class":'se-main-container'})     #블로그마다 동일하게 HTML 중 div에서 se-main-container의 본문을 가져옴
             for a in title:
                 text=a.get_text()    # 가져온 본문 중 text만 가져옴
-            text=text.replace("\n","").replace("\u200b","")                # \n 과 \u200b 문자는 HTML 이므로 제거
-            return text
+            text_data=text.replace("\n","").replace("\u200b","")                # \n 과 \u200b 문자는 HTML 이므로 제거
+            return text_data
         except:
             print(f"{try_url}({location}) error")
     else:
