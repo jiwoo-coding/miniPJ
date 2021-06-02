@@ -120,9 +120,10 @@ def make_bodytext(try_url, location):
             for a in title:
                 text=a.get_text()    # 가져온 본문 중 text만 가져옴  
             while text.find('\n\n') != -1:   # \n가 2개이상 되어 있는 모든 문자열 제거
-                text.replace("\n\n","\n")
-            return text.replace("\u200b","")               # \n 과 \u200b 문자는 HTML 이므로 제거
+                text=text.replace("\n\n","\n")
             time.sleep(0.1)
+            return text.replace("\u200b","")               # \n 과 \u200b 문자는 HTML 이므로 제거
+            
         except:
             print(f"{try_url} ({location}) error")
     else:
