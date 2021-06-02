@@ -32,7 +32,7 @@ except:
 # naver api key를 이용해서 검색을 통한 키워드 추출
 def api_naver_TL(keyword,location):
     '''
-    api_naver_TL(*location)
+    api_naver_TL(*keyword,**location)
     > naver api key를 이용한 후 검색사이트 지정 및 검색키워드에 따른 Title과 Link data 수집 및 저장
     > 1000 data searching
     
@@ -41,9 +41,7 @@ def api_naver_TL(keyword,location):
         **location='blog', 'cafe' 등 검색 위치 입력(string)
         
     return:
-    (총 2개)
         Dataframe       >> dataframe 형태로 data 추출 
-        검색키워드(검색위치).csv 파일로 directory 자동 저장
     '''
     
     headers =  {   # Api key 입력
