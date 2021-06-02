@@ -102,7 +102,7 @@ def make_bodytext(try_url, location):
     
     argument:
         *try_url= Link값 (string)
-        **location='blog', 'cafe' 등 검색 위치 입력(string)
+        **location='blog', 'kin'(지식인) 검색 위치 입력(string)
         
     return:
         text data(string)       >> 문자열 형태로 본문 text 추출 
@@ -125,9 +125,23 @@ def make_bodytext(try_url, location):
                 text=text.replace("\n\n","\n")
             time.sleep(0.1)
             return text.replace("\u200b","")              # \n 과 \u200b 문자는 HTML 이므로 제거
-            
         except:
             print(f"{try_url} ({location}) error")
+            
+    elif location=='kin':  # '지식인' 에서만 적용
+        try:
+            url=try_url   # URL 재생성
+            res=urllib.request.urlopen(url)
+            soup=BeautifulSoup(res, 'html.parser')
+            title = soup.findAll("div",{"class":'answer-content__list _answerList'})     #지식인 마다 동일하게 HTML 중 div에서 se-main-container의 본문을 가져옴
+            for a in title:
+                text=a.get_text()    # 가져온 본문 중 text만 가져옴  
+            while text.find('\n\n') != -1:   # \n가 2개이상 되어 있는 모든 문자열 제거
+                text=text.replace("\n\n","\n")
+            time.sleep(0.1)
+            return text.replace("\u200b","")
+        except:
+            print(f"{try_url} ({'지식 IN'}) error")
     else:
         print("location is not allowed")
         return 0
