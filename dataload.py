@@ -48,22 +48,23 @@ def api_naver_TL(keyword,location):
       'X-Naver-Client-Id': My_naver_api_ID,
       'X-Naver-Client-Secret': My_naver_api_Secret
     }
-    dic_payload = {'query': keyword, 'display': '100',}
+    dic_payload = {'query': keyword, 'display': '100'}
     data=pd.DataFrame(columns=['Title','Link'])
     for j in range(1,1000,100):
-        dic_payload['start'] = j
-        url = 'https://openapi.naver.com/v1/search/'+str(location)+'.json'
-        res = requests.get(url, headers=headers, params=dic_payload)
-        dic={}
-        for i in range(100):
-            try:
+        try:
+            dic_payload['start'] = j
+            url = 'https://openapi.naver.com/v1/search/'+str(location)+'.json'
+            res = requests.get(url, headers=headers, params=dic_payload)
+            dic={}
+            for i in range(len(res.json()['items'])):
                 temp=BeautifulSoup(res.json()['items'][i]['title'], 'html.parser')
                 temp=temp.get_text()  # HTML 파싱 한것 중 text만 가져옴
                 dic[temp]=res.json()['items'][i]['link']
-            except:
-                print(res.json())
-        temp_df=pd.DataFrame(dic.items(), columns=['Title','Link'])
-        data=pd.concat([data,temp_df], axis=0)  # dataframe 복사
+
+            temp_df=pd.DataFrame(dic.items(), columns=['Title','Link'])
+            data=pd.concat([data,temp_df], axis=0)  # dataframe 복사
+        except:
+            print(f"{keyword} ({location}) data set error")
     data.reset_index(drop=True, inplace=True) # 인덱스 정렬
     
     return data
