@@ -132,6 +132,8 @@ def make_bodytext(try_url, location):
             soup=BeautifulSoup(res, 'html.parser')
             title = soup.findAll("div",{"id":'cContentBody'})     # HTML 중 div에서 cContentBody의 본문을 가져옴
             if len(title)==0:
+                title = soup.findAll("div",{"class":'se-main-container'})
+            if len(title)==0:
                 title = soup.findAll("div",{"id":'body'})
             if len(title)==0:
                 title = soup.findAll("div",{"class":'view-body'})
