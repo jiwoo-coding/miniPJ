@@ -137,7 +137,6 @@ def make_bodytext(try_url, location):
                 title = soup.findAll("div",{"class":'view-body'})
             if len(title)==0:
                 title = soup.findAll("main",{"class":'main'})
-            while len(title)
             for a in title:
                 text=a.get_text()    # 가져온 본문 중 text만 가져옴  
             while text.find('\n\n') != -1:   # \n가 2개이상 되어 있는 모든 문자열 제거
