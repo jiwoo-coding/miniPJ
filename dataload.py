@@ -68,7 +68,7 @@ def api_naver_TL(keyword,location):
     
     return data
 
-# 동적 elements의 HTML을 가져오기 위해 naver blog URL 재설정
+# 동적 elements의 HTML을 가져오기 위해 URL 재설정
 def final_url_blog(try_url):
     try:
         url=try_url
@@ -80,18 +80,14 @@ def final_url_blog(try_url):
         soup_temp=BeautifulSoup(html_result.text, 'html.parser')
         area_temp=soup_temp.find(id='mainFrame')     # id가 mainFrame을 찾는다.
         url_3=area_temp.get('src')
-        print(url_3)
-        url_4='https://blog.naver.com'+url_3         # 
-        return url_4
+        return url_3
     except:
         try:
             area_temp = soup_temp.find(id='mainFrame')
             url_3=area_temp.get('src')
-            url_4='https://blog.naver.com'+url_3
-            return url_4
+            return url_3
         except:
-            print(f'{try_url} renew error')
-            return None
+            return try_url   #동적이 아니면 기본 URL 그대로 가져오기.
 
 # 새롭게 만든 URL을 이용해서 TEXT data 추출
 def make_bodytext(try_url, location):
@@ -102,14 +98,15 @@ def make_bodytext(try_url, location):
     
     argument:
         *try_url= Link값 (string)
-        **location='blog', 'kin'(지식인) 검색 위치 입력(string)
+        **location=['blog', 'kin'(지식인)] 검색 위치 입력(string)
         
     return:
         text data(string)       >> 문자열 형태로 본문 text 추출 
     '''
-    if location=='blog' and try_url.find("daum.net")==-1:  #'blog' 에서만 적용 (daum은 제외)
+    key_url=final_url_blog(try_url)  # 동적, 정적 url 구분 코드
+    if location=='blog' and try_url!=key_url:  #'naver blog' 에서만 적용 (동적 URL로 변동 될 경우)
         try:
-            url=final_url_blog(try_url)   # URL 재생성
+            url='https://blog.naver.com'+key_url  # 동적 URL을 naver blog 주소와 합치기
             res=urllib.request.urlopen(url)
             soup=BeautifulSoup(res, 'html.parser')
             title = soup.findAll("div",{"class":'se-main-container'})     #블로그마다 동일하게 HTML 중 div에서 se-main-container의 본문을 가져옴
@@ -126,14 +123,21 @@ def make_bodytext(try_url, location):
             time.sleep(0.1)
             return text.replace("\u200b","")              # \n 과 \u200b 문자는 HTML 이므로 제거
         except:
-            print(f"{try_url} ({location}) error")
+            print(f"{try_url} (Naver {location}) crawling error")
     
-    elif location=='blog' and try_url.find("daum.net")!=-1:  #'daum blog'만 예외 적용
+    elif location=='blog' and try_url==key_url:  # 'blog' 중 정적 url
         try:
-            url=try_url   # URL 재생성
+            url=key_url   # URL 재생성
             res=urllib.request.urlopen(url)
             soup=BeautifulSoup(res, 'html.parser')
-            title = soup.findAll("div",{"id":'cContentBody'})     #지식인 마다 동일하게 HTML 중 div에서 se-main-container의 본문을 가져옴
+            title = soup.findAll("div",{"id":'cContentBody'})     # HTML 중 div에서 cContentBody의 본문을 가져옴
+            if len(title)==0:
+                title = soup.findAll("div",{"id":'body'})
+            if len(title)==0:
+                title = soup.findAll("div",{"class":'view-body'})
+            if len(title)==0:
+                title = soup.findAll("main",{"class":'main'})
+            while len(title)
             for a in title:
                 text=a.get_text()    # 가져온 본문 중 text만 가져옴  
             while text.find('\n\n') != -1:   # \n가 2개이상 되어 있는 모든 문자열 제거
@@ -141,9 +145,9 @@ def make_bodytext(try_url, location):
             time.sleep(0.1)
             return text.replace("\xa0","")
         except:
-            print(f"{try_url} ({location}) error")
+            print(f"{try_url} ({location}) crawling error")
     
-    elif location=='kin':  # '지식인' 에서만 적용
+    elif location=='kin' and try_url==key_url:  # '지식인' 에서만 적용 (정적)
         try:
             url=try_url   # URL 재생성
             res=urllib.request.urlopen(url)
@@ -156,7 +160,7 @@ def make_bodytext(try_url, location):
             time.sleep(0.1)
             return text.replace("\u200b","")
         except:
-            print(f"{try_url} ({'지식 IN'}) error")
+            print(f"{try_url} ({'지식 IN'}) crawling error")
     else:
         print("location is not allowed")
         return 0
