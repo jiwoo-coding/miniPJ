@@ -57,9 +57,8 @@ def api_naver_TL(keyword,location):
             res = requests.get(url, headers=headers, params=dic_payload)
             dic={}
             for i in range(len(res.json()['items'])):
-                temp=BeautifulSoup(res.json()['items'][i]['title'], 'html.parser')
-                temp=temp.get_text()  # HTML 파싱 한것 중 text만 가져옴
-                dic[temp]=res.json()['items'][i]['link']
+                title=res.json()['items'][i]['title']
+                dic[title]=res.json()['items'][i]['link']
 
             temp_df=pd.DataFrame(dic.items(), columns=['Title','Link'])
             data=pd.concat([data,temp_df], axis=0)  # dataframe 복사
