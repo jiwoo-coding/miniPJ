@@ -27,7 +27,6 @@ try:
     My_naver_api_Secret='bNHhcXBeWr'
 except:
     print("필수 import 설치 요구 (dataload? 참고)")
-    key='error'
         
 # naver api key를 이용해서 검색을 통한 키워드 추출
 def api_naver_TL(keyword,location):
@@ -63,7 +62,7 @@ def api_naver_TL(keyword,location):
             temp_df=pd.DataFrame(dic.items(), columns=['Title','Link'])
             data=pd.concat([data,temp_df], axis=0)  # dataframe 복사
         except:
-            print(f"{keyword} ({location}) data set error")
+            print(f" {keyword} ({location}) data set error")
     data.reset_index(drop=True, inplace=True) # 인덱스 정렬
     
     return data
@@ -123,7 +122,7 @@ def make_bodytext(try_url, location):
             time.sleep(0.1)
             return text.replace("\u200b","")              # \n 과 \u200b 문자는 HTML 이므로 제거
         except:
-            print(f"{try_url} (Naver {location}) crawling error")
+            print(f" {try_url} (Naver {location}) crawling error")
     
     elif location=='blog' and try_url==key_url:  # 'blog' 중 정적 url
         try:
@@ -146,7 +145,7 @@ def make_bodytext(try_url, location):
             time.sleep(0.1)
             return text.replace("\xa0","")
         except:
-            print(f"{try_url} ({location}) crawling error")
+            print(f" {try_url} ({location}) crawling error")
     
     elif location=='kin' and try_url==key_url:  # '지식인' 에서만 적용 (정적)
         try:
@@ -161,7 +160,7 @@ def make_bodytext(try_url, location):
             time.sleep(0.1)
             return text.replace("\u200b","")
         except:
-            print(f"{try_url} ({'지식 IN'}) crawling error")
+            print(f" {try_url} ({'지식 IN'}) crawling error")
     else:
         print("location is not allowed")
         return 0
