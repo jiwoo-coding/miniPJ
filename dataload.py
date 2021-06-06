@@ -15,18 +15,15 @@ Naver를 이용한 데이터 크롤링(API KEY 필요)
     dataload.api_naver_TL(*keyword,**location)    >> 검색 위치와 검색 키워드로 타이틀과 링크를 dataframe 호출
     dataload.make_bodytext(*try_url, **location)  >> URL과 검색 위치에 따라서 TEXT(string) data로 반환
 '''
-try:
-    from bs4 import BeautifulSoup
-    import urllib.request
-    import pandas as pd
-    import requests
-    import time
+from bs4 import BeautifulSoup
+import urllib.request
+import pandas as pd
+import requests
+import time
 
-    # 입력값
-    My_naver_api_ID='NtViEQEhhin_KXWOLExO'
-    My_naver_api_Secret='bNHhcXBeWr'
-except:
-    print("필수 import 설치 요구 (dataload? 참고)")
+# 입력값
+My_naver_api_ID='NtViEQEhhin_KXWOLExO'
+My_naver_api_Secret='bNHhcXBeWr'
         
 # naver api key를 이용해서 검색을 통한 키워드 추출
 def api_naver_TL(keyword,location):
