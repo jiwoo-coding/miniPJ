@@ -34,7 +34,7 @@ def api_naver_TL(keyword,location):
     
     argument:
         *keyword=검색어(string)
-        **location='blog', 'cafe' 등 검색 위치 입력(string)
+        **location='blog', 'kin'(지식인) 등 검색 위치 입력(string)
         
     return:
         Dataframe       >> dataframe 형태로 data 추출 
@@ -161,3 +161,47 @@ def make_bodytext(try_url, location):
     else:
         print("location is not allowed")
         return 0
+
+def requset_text(soup_f):
+    for i in soup_f:
+        text=i.get_text()
+    while text.find('\n') != -1:   # \n 제거
+        text=text.replace("\n","")
+    while text.find('\t') != -1:   # \t 제거
+        text=text.replace("\t","")
+    return text
+
+def make_body(data, location):
+    if location=='kin':
+        make_data=pd.DataFrame(columns=['Q_title','Q_content','A_content_1','A_content_2','A_content_3','A_content_4','A_content_5'])
+        for i in range(len(data)):
+            temp_dic={}
+            url=data.loc[i,'Link']   
+            res=urllib.request.urlopen(url)
+            soup=BeautifulSoup(res, 'html.parser')
+            
+            Q_title = soup.findAll("div",{"class":'title'}) 
+            title_text=requset_text(Q_title)
+            temp_dic['Q_title']=title_text
+            
+            Q_content = soup.findAll("div",{"class":'c-heading__content'})
+            contents_text=requset_text(Q_content)
+            temp_dic['Q_content']=contents_text
+            
+            A_contents = soup.findAll("div",{"class":"se-component-content"})
+            k=1
+            for j in A_contents:
+                if len(j.attrs['class'])>=2:  # 삭제 되거나 없는 경우
+                    continue
+                    
+                text=j.get_text()
+                while text.find('\u200b') != -1:   # \u200b 제거
+                    text=text.replace("\u200b"," ")
+                    
+                name=str('A_content_')+str(k)
+                temp_dic[name]=text
+                k+=1
+                
+            make_data=make_data.append(temp_dic, ignore_index=True)
+            
+    return make_data
