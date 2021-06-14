@@ -192,7 +192,7 @@ def make_body(data, location):
             contents_text=requset_text(Q_content)
             temp_dic['Q_content']=contents_text
             
-            A_contents = soup.findAll("div",{"class":"se-component-content"})
+            A_contents = soup.findAll("div",{"class":"se-main-container"})
             k=1
             for j in A_contents:
                 if len(j.attrs['class'])>=2:  # 삭제 되거나 없는 경우
