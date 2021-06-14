@@ -163,13 +163,17 @@ def make_bodytext(try_url, location):
         return 0
 
 def requset_text(soup_f):
-    for i in soup_f:
-        text=i.get_text()
-    while text.find('\n') != -1:   # \n 제거
-        text=text.replace("\n","")
-    while text.find('\t') != -1:   # \t 제거
-        text=text.replace("\t","")
-    return text
+    try:
+        for i in soup_f:
+            text=i.get_text()
+        while text.find('\n') != -1:   # \n 제거
+            text=text.replace("\n","")
+        while text.find('\t') != -1:   # \t 제거
+            text=text.replace("\t","")
+        return text
+    except:
+        text=''
+        return text
 
 def make_body(data, location):
     if location=='kin':
