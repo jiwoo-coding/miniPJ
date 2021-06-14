@@ -177,7 +177,7 @@ def requset_text(soup_f):
 
 def make_body(data, location):
     if location=='kin':
-        make_data=pd.DataFrame(columns=['Q_title','Q_content','A_content_1','A_content_2','A_content_3','A_content_4','A_content_5'])
+        make_data=pd.DataFrame(columns=['Q_title','Q_content','A_content_1'])
         for i in range(len(data)):
             temp_dic={}
             url=data.loc[i,'Link']   
