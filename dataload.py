@@ -196,7 +196,7 @@ def make_body(data, location):
             A_contents = soup.findAll("div",{"class":"se-main-container"})  # 답변이 2개 이상인 경우
             
             if len(A_contents)==0:    # 답변이 1개 인경우
-                A_contents = soup.findAll("div",{"_endContents c-heading-answer__content"})
+                A_contents = soup.findAll("div",{"_endContentsText c-heading-answer__content-user"})
                 check=1
             k=1
             for j in A_contents:
@@ -207,6 +207,12 @@ def make_body(data, location):
                 
                 while text.find('\u200b') != -1:   # \u200b 제거
                     text=text.replace("\u200b"," ")
+                    
+                while text.find('\n') != -1:   # \n 제거
+                    text=text.replace("\n"," ")
+                    
+                while text.find('\xa0') != -1:   # \xa0 제거
+                    text=text.replace("\xa0"," ")
                     
                 name=str('A_content_')+str(k)
                 temp_dic[name]=text
