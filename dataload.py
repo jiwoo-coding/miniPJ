@@ -179,6 +179,7 @@ def make_body(data, location):
     if location=='kin':
         make_data=pd.DataFrame(columns=['Q_title','Q_content','A_content_1'])
         for i in range(len(data)):
+            check=0
             temp_dic={}
             url=data.loc[i,'Link']   
             res=urllib.request.urlopen(url)
@@ -192,13 +193,18 @@ def make_body(data, location):
             contents_text=requset_text(Q_content)
             temp_dic['Q_content']=contents_text
             
-            A_contents = soup.findAll("div",{"class":"se-main-container"})
+            A_contents = soup.findAll("div",{"class":"se-main-container"})  # 답변이 2개 이상인 경우
+            
+            if len(A_contents)==0:    # 답변이 1개 인경우
+                A_contents = soup.findAll("div",{"_endContents c-heading-answer__content"})
+                check=1
             k=1
             for j in A_contents:
-                if len(j.attrs['class'])>=2:  # 삭제 되거나 없는 경우
+                if len(j.attrs['class'])>=2 and check!=1:  # 삭제 되거나 없는 경우
                     continue
                     
                 text=j.get_text()
+                
                 while text.find('\u200b') != -1:   # \u200b 제거
                     text=text.replace("\u200b"," ")
                     
