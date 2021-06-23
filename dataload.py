@@ -14,6 +14,7 @@ Naver를 이용한 데이터 크롤링(API KEY 필요)
 # function
     dataload.api_naver_TL(*keyword,**location)    >> 검색 위치와 검색 키워드로 타이틀과 링크를 dataframe 호출
     dataload.make_bodytext(*try_url, **location)  >> URL과 검색 위치에 따라서 TEXT(string) data로 반환
+    dataload.make_body(*data, **location)         >> dataload.api_naver_TL로 반환된 dataframe을 크롤링 후 Title, content 형태로 dataframe 반환
 '''
 from bs4 import BeautifulSoup
 import urllib.request
@@ -193,9 +194,9 @@ def make_body(data, location):
             contents_text=requset_text(Q_content)
             temp_dic['Q_content']=contents_text
             
-            A_contents = soup.findAll("div",{"class":"se-main-container"})  # 답변이 2개 이상인 경우
+            A_contents = soup.findAll("div",{"class":"se-main-container"})  # 대부분 
             
-            if len(A_contents)==0:    # 답변이 1개 인경우
+            if len(A_contents)==0:    # 다른 케이스
                 A_contents = soup.findAll("div",{"_endContentsText c-heading-answer__content-user"})
                 check=1
             k=1
