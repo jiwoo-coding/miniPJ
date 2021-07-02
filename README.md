@@ -4,7 +4,7 @@
 Html code 불러 올시 정적 HTML element 와 동적 HTML element로 구분됨. 
 <br> 정적HTML은 오픈된 URL로 모든 코드를 볼 수 있음
 <br> 반면 동적 HTML은 개발자 코드를 따로 봐야 해서 frame을 찾아 특정한 URL을 추출 해야함.
-<br> data 폴더 내 npy 파일은 np.load('model/'이름'.npy', allow_pickle=True) 형식으로 불러오면 됨.
+<br> data 폴더 내 npy 파일은 전체 활용한 데이터이며, np.load('model/'이름'.npy', allow_pickle=True) 형식으로 불러오면 됨.
 
 ### 1. Data Collection
 1. Web crawling
